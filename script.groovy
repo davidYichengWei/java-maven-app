@@ -4,14 +4,14 @@ def testApp() {
 }
 
 def buildJar() {
-    if (BRANCH_NAME == "master") {
+    if (BRANCH_NAME == "jenkins-jobs") {
         echo "Building the application..."
         sh "mvn package"
     }
 }
 
 def buildImage() {
-    if (BRANCH_NAME == "master") {
+    if (BRANCH_NAME == "jenkins-jobs") {
         echo "Building the docker image..."
 
         withCredentials([usernamePassword(credentialsId: 'DockerHub-credential', 
@@ -25,7 +25,7 @@ def buildImage() {
 }
 
 def deployApp() {
-    if (BRANCH_NAME == "master") {
+    if (BRANCH_NAME == "jenkins-jobs") {
         echo "Deploying the application..."
     }
 }

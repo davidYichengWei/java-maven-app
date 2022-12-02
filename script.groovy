@@ -1,19 +1,33 @@
+def testApp() {
+    echo "Executing pipeline for branch ${BRANCH_NAME}"
+    echo "Testing the application..."
+}
+
 def buildJar() {
-    echo "building the application..."
-    sh 'mvn package'
-} 
+    if (BRANCH_NAME == "master") {
+        echo "Building the application..."
+        sh "mvn package"
+    }
+}
 
 def buildImage() {
-    echo "building the docker image..."
-    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh 'docker build -t nanajanashia/demo-app:jma-2.0 .'
-        sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh 'docker push nanajanashia/demo-app:jma-2.0'
+    if (BRANCH_NAME == "master") {
+        echo "Building the docker image..."
+
+        withCredentials([usernamePassword(credentialsId: 'DockerHub-credential', 
+            usernameVariable: 'USER', passwordVariable: 'PWD')]) 
+        {
+            sh "docker build -t yichengwei/demo-jenkins:jma-2.0 ."
+            sh "echo $PWD | docker login -u ${USER} --password-stdin"
+            sh "docker push yichengwei/demo-jenkins:jma-2.0"
+        }
     }
-} 
+}
 
 def deployApp() {
-    echo 'deploying the application...'
-} 
+    if (BRANCH_NAME == "master") {
+        echo "Deploying the application..."
+    }
+}
 
 return this

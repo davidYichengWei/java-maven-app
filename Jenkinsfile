@@ -3,10 +3,6 @@ pipeline {
 
     agent any
 
-    tools {
-        mvn 'maven-3.8'
-    }
-
     parameters {
         choice(name: 'VERSION', choices: ['1.1', '1.2', '1.3'], description: '')
         booleanParam(name: 'executeTests', defaultValue: true, description: 'Execute tests')

@@ -29,13 +29,13 @@ pipeline {
                 }
             }
         }
-        stage('build docker image') {
-            steps {
-                script {
-                    gv.buildImage()
-                }
-            }
-        }
+        // stage('build docker image') {
+        //     steps {
+        //         script {
+        //             gv.buildImage()
+        //         }
+        //     }
+        // }
         stage('deploy') {
             steps {
                 script {

@@ -1,52 +1,40 @@
-def gv
-
 pipeline {
-
     agent any
 
-    parameters {
-        choice(name: 'VERSION', choices: ['1.1', '1.2', '1.3'], description: '')
-        booleanParam(name: 'executeTests', defaultValue: true, description: 'Execute tests')
+    tools {
+        maven "maven-3.8"
     }
 
-
     stages {
-
-        stage("init") {
+        stage('build jar') {
             steps {
                 script {
-                    gv = load "script.groovy"
+                    echo "Building the application..."
+                    sh "mvn package"
                 }
             }
         }
-
-        stage("build") {
+        stage('build docker image') {
             steps {
                 script {
-                    gv.buildApp()
+                    echo "Building the docker image..."
+
+                    withCredentials([usernamePassword(credentialsId: 'DockerHub-credential', 
+                        usernameVairable: 'USER', passwordVariable: 'PWD')]) 
+                    {
+                        sh "docker build -t yichengwei/demo-jenkins:jma-2.0 ."
+                        sh "echo $PWD | docker login -u ${USER} --password-stdin"
+                        sh "docker push yichengwei/demo-jenkins:jma-2.0"
+                    }
                 }
             }
         }
-
-        stage("test") {
+        stage('deploy') {
             steps {
                 script {
-                    gv.testApp()
+                    echo "Deploying the application..."
                 }
             }
         }
-
-        stage("deploy") {
-            steps {
-                script {
-                    env.ENV = input message: "Select the environment to deploy to", ok: "Select", 
-                        parameters: [choice(name: 'ENV_ONE', choices: ['dev', 'staging', 'prod'], description: '')]
-
-                    gv.deployApp()
-                    echo "Deploying to ${ENV}"
-                }
-            }
-        }
-
     }
 }

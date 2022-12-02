@@ -18,7 +18,7 @@ def buildImage() {
             usernameVariable: 'USER', passwordVariable: 'PWD')]) 
         {
             sh "docker build -t yichengwei/demo-jenkins:jma-2.0 ."
-            sh 'docker login -u $USER -p $PWD'
+            sh 'echo $PWD | docker login -u $USER --password-stdin'
             sh "docker push yichengwei/demo-jenkins:jma-2.0"
         }
     }

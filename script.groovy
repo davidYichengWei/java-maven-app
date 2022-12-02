@@ -3,7 +3,7 @@ def buildApp() {
 }
 
 def testApp() {
-    if (${params.executeTests}) {
+    if (params.executeTests) {
         echo "Testing the application..."
     }
 }

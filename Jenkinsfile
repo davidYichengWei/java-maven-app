@@ -31,10 +31,12 @@ pipeline {
                 }
             }
         }
-        stage('build docker image') {
+        stage('build and push docker image') {
             steps {
                 script {
-                    buildImage 'yichengwei/demo-jenkins:jma-3.0'
+                    buildImage('yichengwei/demo-jenkins:jma-3.0')
+                    dockerLogin()
+                    dockerPush('yichengwei/demo-jenkins:jma-3.0')
                 }
             }
         }

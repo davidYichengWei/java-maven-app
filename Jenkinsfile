@@ -34,7 +34,7 @@ pipeline {
         stage('build docker image') {
             steps {
                 script {
-                    buildImage()
+                    buildImage 'yichengwei/demo-jenkins:jma-3.0'
                 }
             }
         }

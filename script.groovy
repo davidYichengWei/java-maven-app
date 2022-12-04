@@ -3,9 +3,20 @@ def testApp() {
     echo "Testing the application..."
 }
 
+def incrementVersion() {
+    echo "Incrementing app version"
+    sh 'mvn build-helper:parse-version versions:set \
+        -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
+        versions:commit'
+
+    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+    def version = matcher[0][1] // [0]: <version>(.+)</version>, [0][1]: (.+)
+    env.IMAGE_NAME = "$version-$BUILD_NUMBER" // commom practice to append jenkins build number to version
+}
+
 def buildJar() {
     echo "Building the application..."
-    sh "mvn package"
+    sh "mvn clean package" // clean existing jar files before building
 }
 
 def buildImage() {
@@ -14,9 +25,9 @@ def buildImage() {
     withCredentials([usernamePassword(credentialsId: 'DockerHub-credential', 
         usernameVariable: 'USER', passwordVariable: 'PWD')]) 
     {
-        sh "docker build -t yichengwei/demo-jenkins:jma-3.1 ."
+        sh "docker build -t yichengwei/demo-jenkins:${IMAGE_NAME} ."
         sh "echo $PWD | docker login -u ${USER} --password-stdin"
-        sh "docker push yichengwei/demo-jenkins:jma-3.1"
+        sh "docker push yichengwei/demo-jenkins:${IMAGE_NAME}"
     }
 }
 

@@ -37,7 +37,7 @@ def deployApp() {
 
 def commitVersion() {
     withCredentials([usernamePassword(credentialsId: 'git-credential', 
-        usernameVariable: 'USER', passwordVariable: 'PWD')]) 
+        usernameVariable: 'USER', passwordVariable: 'PWD')], [string(credentialsId: 'github-token', variable: 'TOKEN')]) 
     {
         sh 'git config --global user.email "jenkins@example.com"'
         sh 'git config --global user.name "jenkins"'
@@ -46,7 +46,7 @@ def commitVersion() {
         sh 'git branch'
         sh 'git config --list'
 
-        sh "git remote set-url origin https://${USER}:${PWD}@github.com/davidYichengWei/java-maven-app.git"
+        sh "git remote set-url origin https://${USER}:${TOKEN}@github.com/davidYichengWei/java-maven-app.git"
         sh 'git add .'
         sh 'git commit -m "CI: Version bump"'
         sh 'git push origin HEAD:master'

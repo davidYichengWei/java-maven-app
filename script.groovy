@@ -33,7 +33,7 @@ def buildImage() {
 
 def deployApp() {
     echo "Deploying the application...."
-    def dockerCmd = 'docker run -p 3080:3080 -d yichengwei/demo-app:1.3'
+    def dockerCmd = "docker run -p 8080:8080 -d yichengwei/demo-jenkins:${IMAGE_NAME}}"
     sshagent(['ec2-server-key']) {
         sh "ssh -o StrictHostKeyChecking=no ec2-user@3.211.8.185 ${dockerCmd}"
     }

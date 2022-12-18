@@ -11,7 +11,7 @@ def incrementVersion() {
 
     def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
     def version = matcher[0][1] // [0]: <version>(.+)</version>, [0][1]: (.+)
-    env.IMAGE_NAME = "$version-$BUILD_NUMBER" // commom practice to append jenkins build number to version
+    env.IMAGE_NAME = "yichengwei/demo-jenkins:${version}-${BUILD_NUMBER}" // commom practice to append jenkins build number to version
 }
 
 def buildJar() {
@@ -25,15 +25,15 @@ def buildImage() {
     withCredentials([usernamePassword(credentialsId: 'DockerHub-credential', 
         usernameVariable: 'USER', passwordVariable: 'PWD')]) 
     {
-        sh "docker build -t yichengwei/demo-jenkins:${IMAGE_NAME} ."
+        sh "docker build -t ${IMAGE_NAME} ."
         sh "echo $PWD | docker login -u ${USER} --password-stdin"
-        sh "docker push yichengwei/demo-jenkins:${IMAGE_NAME}"
+        sh "docker push ${IMAGE_NAME}"
     }
 }
 
 def deployApp() {
     echo "Deploying the application...."
-    def shellCmd = "bash ./server-cmds.sh"
+    def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
     sshagent(['ec2-server-key']) {
         sh "scp docker-compose.yml ec2-user@3.211.8.185:/home/ec2-user"
         sh "scp server-cmds.sh ec2-user@3.211.8.185:/home/ec2-user"

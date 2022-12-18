@@ -33,7 +33,7 @@ def buildImage() {
 
 def deployApp() {
     echo "Deploying the application...."
-    def shellCmd = "bash ./server-cmd.sh"
+    def shellCmd = "bash ./server-cmds.sh"
     sshagent(['ec2-server-key']) {
         sh "scp docker-compose.yml ec2-user@3.211.8.185:/home/ec2-user"
         sh "scp server-cmds.sh ec2-user@3.211.8.185:/home/ec2-user"

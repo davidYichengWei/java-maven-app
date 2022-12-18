@@ -31,13 +31,15 @@ def buildImage() {
     }
 }
 
-def deployApp() {
+def deployApp(EC2_IP) {
     echo "Deploying the application...."
     def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
+    def ec2Instance = "ec2-user@${EC2_IP}"
+
     sshagent(['ec2-server-key']) {
-        sh "scp docker-compose.yml ec2-user@3.211.8.185:/home/ec2-user"
-        sh "scp server-cmds.sh ec2-user@3.211.8.185:/home/ec2-user"
-        sh "ssh -o StrictHostKeyChecking=no ec2-user@3.211.8.185 ${shellCmd}"
+        sh "scp docker-compose.yml ${ec2Instance}:/home/ec2-user"
+        sh "scp server-cmds.sh ${ec2Instance}:/home/ec2-user"
+        sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${shellCmd}"
     }
 }
 

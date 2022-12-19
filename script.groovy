@@ -1,6 +1,6 @@
 def testApp() {
-    echo "Executing pipeline for branch jenkins-jobs"
     echo "Testing the application...."
+    sh "mvn test"
 }
 
 def incrementVersion() {

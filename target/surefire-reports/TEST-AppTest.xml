@@ -4,7 +4,7 @@
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.17+8"/>
     <property name="sun.boot.library.path" value="/opt/java/openjdk/lib"/>
-    <property name="maven.multiModuleProjectDirectory" value="/var/jenkins_home/workspace/a-maven-multibranch_jenkins-jobs"/>
+    <property name="maven.multiModuleProjectDirectory" value="/var/jenkins_home/workspace/_multibranch_k8s-ci_cd-dockerhub"/>
     <property name="java.vm.vendor" value="Eclipse Adoptium"/>
     <property name="java.vendor.url" value="https://adoptium.net/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -13,7 +13,7 @@
     <property name="sun.os.patch.level" value="unknown"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/var/jenkins_home/workspace/a-maven-multibranch_jenkins-jobs"/>
+    <property name="user.dir" value="/var/jenkins_home/workspace/_multibranch_k8s-ci_cd-dockerhub"/>
     <property name="java.vm.compressedOopsMode" value="32-bit"/>
     <property name="java.runtime.version" value="11.0.17+8"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>

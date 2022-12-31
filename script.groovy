@@ -31,16 +31,11 @@ def buildImage() {
     }
 }
 
-def deployApp(EC2_IP) {
-    echo "Deploying the application...."
-    def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
-    def ec2Instance = "ec2-user@${EC2_IP}"
+def deployApp() {
+    echo "Deploying to EKS cluster..."
 
-    sshagent(['ec2-server-key']) {
-        sh "scp docker-compose.yml ${ec2Instance}:/home/ec2-user"
-        sh "scp server-cmds.sh ${ec2Instance}:/home/ec2-user"
-        sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${shellCmd}"
-    }
+    sh 'envsubst < kubernetes/deployment.yaml | kubectl apply -f -' // envsubst: replace environment variables in a file
+    sh 'envsubst < kubernetes/service.yaml | kubectl apply -f -'
 }
 
 def commitVersion() {

@@ -2,10 +2,6 @@ def gv
 
 pipeline {
     agent any
-    
-    parameters {
-        string(name: 'EC2_IP', defaultValue: '3.211.8.185', description: 'IP address of EC2 instance to deploy to')
-    }
 
     tools {
         maven "maven-3.8"

@@ -11,7 +11,7 @@ def incrementVersion() {
 
     def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
     def version = matcher[0][1] // [0]: <version>(.+)</version>, [0][1]: (.+)
-    env.IMAGE_NAME = "yichengwei/demo-jenkins:${version}-${BUILD_NUMBER}" // commom practice to append jenkins build number to version
+    env.IMAGE_NAME = "${DOCKER_REPO}:${version}-${BUILD_NUMBER}" // commom practice to append jenkins build number to version
 }
 
 def buildJar() {
@@ -20,13 +20,13 @@ def buildJar() {
 }
 
 def buildImage() {
-    echo "Building the docker image..."
+    echo "Building the docker image and pushing to ECR..."
 
-    withCredentials([usernamePassword(credentialsId: 'DockerHub-credential', 
+    withCredentials([usernamePassword(credentialsId: 'ecr-credential', 
         usernameVariable: 'USER', passwordVariable: 'PWD')]) 
     {
         sh "docker build -t ${IMAGE_NAME} ."
-        sh "echo $PWD | docker login -u ${USER} --password-stdin"
+        sh "echo $PWD | docker login -u ${USER} --password-stdin ${DOCKER_SERVER}"
         sh "docker push ${IMAGE_NAME}"
     }
 }

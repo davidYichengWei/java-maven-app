@@ -11,7 +11,7 @@ def incrementVersion() {
 
     def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
     def version = matcher[0][1] // [0]: <version>(.+)</version>, [0][1]: (.+)
-    env.IMAGE_NAME = "${DOCKER_REPO}:${version}-${BUILD_NUMBER}" // commom practice to append jenkins build number to version
+    env.IMAGE_NAME = "${DOCKER_SERVER}/${DOCKER_REPO}:${version}-${BUILD_NUMBER}" // commom practice to append jenkins build number to version
 }
 
 def buildJar() {

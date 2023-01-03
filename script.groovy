@@ -31,14 +31,30 @@ def buildImage() {
     }
 }
 
-def deployApp(EC2_IP) {
+def provisionServer() {
+    echo "Provisioning the EC2 instance..."
+    dir('terraform') {
+        sh "terraform init"
+        sh "terraform apply -auto-approve"
+        // Set the public IP of the EC2 instance as an environment variable
+        EC2_PUBLIC_IP =  sh(
+            script: "terraform output public_ip"
+            returnStdout: true
+        ).trim()
+    }
+}
+
+def deployApp() {
+    echo "Waiting for the EC2 instance to be ready..."
+    sleep(time: 90, unit: 'SECONDS')
+
     echo "Deploying the application...."
     def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
-    def ec2Instance = "ec2-user@${EC2_IP}"
+    def ec2Instance = "ec2-user@${EC2_PUBLIC_IP}"
 
     sshagent(['ec2-server-key']) {
-        sh "scp docker-compose.yml ${ec2Instance}:/home/ec2-user"
-        sh "scp server-cmds.sh ${ec2Instance}:/home/ec2-user"
+        sh "scp -o StrictHostKeyChecking=no docker-compose.yml ${ec2Instance}:/home/ec2-user"
+        sh "scp -o StrictHostKeyChecking=no server-cmds.sh ${ec2Instance}:/home/ec2-user"
         sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${shellCmd}"
     }
 }

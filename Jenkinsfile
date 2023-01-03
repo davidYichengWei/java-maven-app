@@ -4,7 +4,7 @@ pipeline {
     agent any
     
     parameters {
-        string(name: 'EC2_IP', defaultValue: '3.211.8.185', description: 'IP address of EC2 instance to deploy to')
+        string(name: 'Environment type', defaultValue: 'test', description: 'Type of environment')
     }
 
     tools {
@@ -47,10 +47,23 @@ pipeline {
                 }
             }
         }
+        stage('provision server') {
+            // Environment variables for AWS authentication
+            environment {
+                AWS_ACCESS_KEY_ID = credentials('jenkins_aws_access_key_id')
+                AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_access_key')
+                TF_VAR_environment = params.Environment_type
+            }
+            steps {
+                script {
+                    gv.provisionServer()
+                }
+            }
+        }
         stage('deploy') {
             steps {
                 script {
-                    gv.deployApp(params.EC2_IP)
+                    gv.deployApp()
                 }
             }
         }

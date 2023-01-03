@@ -51,13 +51,19 @@ def deployApp() {
         returnStdout: true
     ).trim()
 
-    // set +x: disable echoing of commands to hide the password
-    sh "set +x"
-    sh "kubectl create secret docker-registry ecr-registry-key \
-        --docker-server=${DOCKER_SERVER} \
-        --docker-username=AWS \
-        --docker-password=${ECR_PWD}"
-    sh "set -x"
+    try {
+        // set +x: disable echoing of commands to hide the password
+        sh '''
+            set +x
+            kubectl create secret docker-registry ecr-registry-key \
+            --docker-server=${DOCKER_SERVER} \
+            --docker-username=AWS \
+            --docker-password=${ECR_PWD}
+            set -x
+        '''
+    } catch (err) {
+        echo err.getMessage()
+    }
 
     echo "Deploying to EKS cluster..."
 

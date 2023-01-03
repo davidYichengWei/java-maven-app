@@ -22,13 +22,9 @@ def buildJar() {
 def buildImage() {
     echo "Building the docker image and pushing to ECR..."
 
-    withCredentials([usernamePassword(credentialsId: 'ecr-credential', 
-        usernameVariable: 'USER', passwordVariable: 'PWD')]) 
-    {
-        sh "docker build -t ${IMAGE_NAME} ."
-        sh "echo $PWD | docker login -u ${USER} --password-stdin ${DOCKER_SERVER}"
-        sh "docker push ${IMAGE_NAME}"
-    }
+    sh "docker build -t ${IMAGE_NAME} ."
+    sh "aws ecr get-login-password --region us-east-1 | docker login -u AWS --password-stdin ${DOCKER_SERVER}"
+    sh "docker push ${IMAGE_NAME}"
 }
 
 def provisionEKS() {

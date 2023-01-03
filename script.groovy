@@ -49,7 +49,7 @@ def deployApp() {
     sleep(time: 90, unit: 'SECONDS')
 
     echo "Deploying the application...."
-    def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
+    def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME} ${DOCKER_CREDS_USER} ${DOCKER_CREDS_PSW}"
     def ec2Instance = "ec2-user@${EC2_PUBLIC_IP}"
 
     sshagent(['ec2-server-key']) {

@@ -3,9 +3,9 @@ def gv
 pipeline {
     agent any
     
-    parameters {
-        string(name: 'Environment type', defaultValue: 'test', description: 'Type of environment')
-    }
+    // parameters {
+    //     string(name: 'Environment type', defaultValue: 'test', description: 'Type of environment')
+    // }
 
     tools {
         maven "maven-3.8"
@@ -52,7 +52,7 @@ pipeline {
             environment {
                 AWS_ACCESS_KEY_ID = credentials('jenkins_aws_access_key_id')
                 AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_access_key')
-                TF_VAR_environment = "${params.Environment_type}"
+                // TF_VAR_environment = "${params.Environment_type}"
             }
             steps {
                 script {
@@ -61,6 +61,9 @@ pipeline {
             }
         }
         stage('deploy') {
+            environment {
+                DOCKER_CREDS = credentials('DockerHub-credential')
+            }
             steps {
                 script {
                     gv.deployApp()

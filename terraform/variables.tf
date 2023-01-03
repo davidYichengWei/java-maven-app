@@ -23,6 +23,11 @@ variable "my-ip" {
     default = "184.148.154.235/32"
 }
 
+variable "jenkins-ip" {
+    description = "Allow Jenkins to connect to the EC2 instance via SSH"
+    default = "52.3.133.90/32"
+}
+
 variable "instance_type" {
     description = "Type of the EC2 instance"
     default = "t2.micro"

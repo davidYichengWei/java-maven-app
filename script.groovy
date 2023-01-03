@@ -38,7 +38,7 @@ def provisionServer() {
         sh "terraform apply -auto-approve"
         // Set the public IP of the EC2 instance as an environment variable
         EC2_PUBLIC_IP =  sh(
-            script: "terraform output public_ip"
+            script: "terraform output public_ip",
             returnStdout: true
         ).trim()
     }

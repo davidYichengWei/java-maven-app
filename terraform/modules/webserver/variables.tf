@@ -15,6 +15,10 @@ variable "my-ip" {
     description = "IP address allowed to connect to the EC2 instance"
 }
 
+variable "jenkins-ip" {
+    description = "Allow Jenkins to connect to the EC2 instance via SSH"
+}
+
 variable "instance_type" {
     description = "Type of the EC2 instance"
 }

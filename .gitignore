@@ -1,2 +1,15 @@
 .idea/*
 target
+
+# local terraform directory
+*/.terraform/*
+
+# terraform state files
+*.tfstate
+*.tfstate.*
+
+# terraform variables files
+*.tfvars
+
+# Ignore crash logs
+crash.log

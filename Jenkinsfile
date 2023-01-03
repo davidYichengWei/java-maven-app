@@ -10,6 +10,10 @@ pipeline {
     environment {
         DOCKER_SERVER = '621431699301.dkr.ecr.us-east-1.amazonaws.com'
         DOCKER_REPO = 'java-maven-app'
+        // Environment variables for AWS authentication
+        AWS_ACCESS_KEY_ID = credentials('jenkins_aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_access_key')
+        AWS_DEFAULT_REGION = "us-east-1"
     }
 
     stages {
@@ -45,6 +49,13 @@ pipeline {
             steps {
                 script {
                     gv.buildImage()
+                }
+            }
+        }
+        stage('provision EKS cluster') {
+            steps {
+                script {
+                    gv.provisionEKS()
                 }
             }
         }

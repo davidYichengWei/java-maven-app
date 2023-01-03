@@ -73,7 +73,7 @@ def commitVersion() {
         sh "git remote set-url origin https://${USER}:${TOKEN}@github.com/davidYichengWei/java-maven-app.git"
         sh 'git add .'
         sh 'git commit -m "CI: Version bump"'
-        sh 'git push origin HEAD:jenkins-jobs'
+        sh 'git push origin HEAD:terraform-ec2'
     }
 }
 

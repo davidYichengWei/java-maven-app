@@ -31,7 +31,6 @@ module "myapp-server" {
     environment = var.environment
     my-ip = var.my-ip
     instance_type = var.instance_type
-    pub_key_location = var.pub_key_location
     image_name = var.image_name
     az = var.az
 }

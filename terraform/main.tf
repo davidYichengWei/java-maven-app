@@ -30,6 +30,7 @@ module "myapp-server" {
     subnet_id = module.myapp-subnet.subnet_id
     environment = var.environment
     my-ip = var.my-ip
+    jenkins-ip = var.jenkins-ip
     instance_type = var.instance_type
     image_name = var.image_name
     az = var.az
